@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mi Red Social</title>
+<style>
+  :root{
+    --azul: #1877f2;
+    --gris-fondo: #f0f2f5;
+    --gris-texto: #65676b;
+    --blanco: #ffffff;
+    --borde: #dddfe2;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: Helvetica, Arial, sans-serif;
+    background: var(--gris-fondo);
+    color:#1c1e21;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    background: var(--blanco);
+    border-bottom: 1px solid var(--borde);
+    padding: 10px 20px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    position: sticky;
+    top:0;
+    z-index: 10;
+  }
+  .logo{
+    color: var(--azul);
+    font-size: 26px;
+    font-weight: bold;
+  }
+  .search-box input{
+    border:none;
+    background: var(--gris-fondo);
+    border-radius: 20px;
+    padding: 8px 15px;
+    width: 220px;
+  }
+  .avatar{
+    width:36px; height:36px;
+    border-radius:50%;
+    background: var(--azul);
+    color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:bold;
+  }
+
+  /* ---------- LAYOUT ---------- */
+  .contenedor{
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  .tarjeta{
+    background: var(--blanco);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    margin-bottom: 20px;
+    padding: 16px;
+  }
+
+  .titulo-seccion{
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    border-bottom: 1px solid var(--borde);
+    padding-bottom: 8px;
+  }
+
+  /* ---------- SECCIÓN VIDEOS ---------- */
+  .grid-videos{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+    gap: 14px;
+  }
+  .video-item{
+    background:#000;
+    border-radius: 8px;
+    overflow:hidden;
+  }
+  .video-item iframe{
+    width:100%;
+    height: 160px;
+    border:0;
+    display:block;
+  }
+  .video-item p{
+    color:#fff;
+    background:#111;
+    margin:0;
+    padding:6px 8px;
+    font-size: 13px;
+  }
+
+  /* ---------- SECCIÓN PUBLICACIONES ---------- */
+  .publicacion{
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow:hidden;
+  }
+  .publicacion .cabecera-post{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding: 10px 12px;
+  }
+  .publicacion .cabecera-post .nombre{
+    font-weight:600;
+    font-size:14px;
+  }
+  .publicacion .cabecera-post .fecha{
+    font-size:12px;
+    color: var(--gris-texto);
+  }
+  .publicacion img{
+    width:100%;
+    max-height: 420px;
+    object-fit: cover;
+    display:block;
+    background:#eee;
+  }
+  .publicacion .texto-post{
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .publicacion .acciones{
+    display:flex;
+    border-top: 1px solid var(--borde);
+    padding: 6px 0;
+  }
+  .publicacion .acciones span{
+    flex:1;
+    text-align:center;
+    color: var(--gris-texto);
+    font-size: 13px;
+    font-weight: 600;
+    cursor:pointer;
+    padding: 6px 0;
+    border-radius: 6px;
+    user-select: none;
+  }
+  .publicacion .acciones span:hover{
+    background: var(--gris-fondo);
+  }
+  .publicacion .acciones span.activo{
+    color: var(--azul);
+  }
+
+  .caja-comentarios{
+    display:none;
+    padding: 10px 12px;
+    border-top: 1px solid var(--borde);
+    background: #f7f8fa;
+  }
+  .caja-comentarios.abierta{
+    display:block;
+  }
+  .lista-comentarios{
+    margin-bottom: 8px;
+  }
+  .comentario{
+    background:#fff;
+    border-radius: 14px;
+    padding: 6px 12px;
+    font-size: 13px;
+    margin-bottom: 6px;
+    display:inline-block;
+  }
+  .form-comentario{
+    display:flex;
+    gap:8px;
+  }
+  .form-comentario input{
+    flex:1;
+    border:1px solid var(--borde);
+    border-radius: 18px;
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  .form-comentario button{
+    border:none;
+    background: var(--azul);
+    color:#fff;
+    border-radius: 18px;
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor:pointer;
+  }
+
+  .video-item .acciones-video{
+    display:flex;
+    background:#111;
+    border-top: 1px solid #222;
+  }
+  .video-item .acciones-video span{
+    flex:1;
+    text-align:center;
+    color:#ccc;
+    font-size: 12px;
+    padding: 6px 0;
+    cursor:pointer;
+    user-select:none;
+  }
+  .video-item .acciones-video span.activo{
+    color: #4da3ff;
+  }
+  .caja-comentarios-video{
+    display:none;
+    background:#1a1a1a;
+    padding: 8px;
+  }
+  .caja-comentarios-video.abierta{
+    display:block;
+  }
+  .caja-comentarios-video .comentario{
+    background:#2a2a2a;
+    color:#fff;
+  }
+  .caja-comentarios-video .form-comentario input{
+    background:#2a2a2a;
+    color:#fff;
+    border-color:#333;
+  }
+
+  .cargando, .vacio{
+    color: var(--gris-texto);
+    text-align:center;
+    padding: 20px;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">facebrok</div>
+    <div class="search-box">
+      <input type="text" placeholder="Buscar en Facebrok">
+    </div>
+    <a href="https://script.google.com/macros/s/AKfycbzVB7wyB4iaYIPtf-2pPAHqRztlVgdTngZiDOVOZDOn-xuYcvsG4-LaO8tuz-bO_KsCxg/exec"
+       target="_blank"
+       style="font-size:12px; color:#1877f2; text-decoration:none; margin-right:10px;">
+      Abrir en pestaña nueva ↗
+    </a>
+    <div class="avatar">TU</div>
+  </header>
+
+  <div class="contenedor">
+
+    <!-- SECCIÓN DE VIDEOS -->
+    <div class="tarjeta">
+      <div class="titulo-seccion">🎬 Videos</div>
+      <div class="grid-videos" id="grid-videos">
+        <!-- Se llena con JS: 5 videos mínimo -->
+      </div>
+    </div>
+
+    <!-- SECCIÓN DE PUBLICACIONES (desde Google Sheet) -->
+    <div class="tarjeta">
+      <div class="titulo-seccion">📰 Publicaciones</div>
+      <div id="lista-publicaciones">
+        <div class="cargando">Cargando publicaciones...</div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // ------------------------------------------------------------
+  // 1) VIDEOS (5 videos propios reproducibles con <video> HTML5)
+  //    Coloca los archivos de video en la misma carpeta que este
+  //    HTML (o súbelos a Drive/hosting) y ajusta la ruta si hace falta.
+  //    IMPORTANTE: deben ser archivos .mp4 reales (aunque Windows
+  //    los muestre como "video.png", el contenido es MP4 según el
+  //    explorador). Renómbralos a .mp4 antes de subirlos.
+  // ------------------------------------------------------------
+  const videos = [
+    { archivo: "video.mp4.mp4",  titulo: "Video 1" },
+    { archivo: "video2.mp4.mp4", titulo: "Video 2" },
+    { archivo: "video3.mp4.mp4", titulo: "Video 3" },
+    { archivo: "video4.mp4.mp4", titulo: "Video 4" },
+    { archivo: "video5.mp4.mp4", titulo: "Video 5" }
+  ];
+
+  function pintarVideos(){
+    const cont = document.getElementById('grid-videos');
+    cont.innerHTML = videos.map((v, i) => `
+      <div class="video-item">
+        <video controls preload="metadata" style="width:100%; height:160px; background:#000;">
+          <source src="${v.archivo}" type="video/mp4">
+          Tu navegador no soporta la reproducción de video.
+        </video>
+        <p>${v.titulo}</p>
+        <div class="acciones-video">
+          <span onclick="toggleLike('video-${i}', this)">👍 <span class="contador">${v.likes || 0}</span> Me gusta</span>
+          <span onclick="toggleComentarios('video-${i}')">💬 Comentar</span>
+        </div>
+        <div class="caja-comentarios-video" id="comentarios-video-${i}">
+          <div class="lista-comentarios" id="lista-comentarios-video-${i}"></div>
+          <div class="form-comentario">
+            <input type="text" id="input-comentario-video-${i}" placeholder="Escribe un comentario...">
+            <button onclick="agregarComentario('video-${i}')">Enviar</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+  pintarVideos();
+
+  // ------------------------------------------------------------
+  // Me gusta / Comentarios (funciona tanto para videos como
+  // para publicaciones, usando un identificador único por tarjeta)
+  // ------------------------------------------------------------
+  const estado = {}; // { id: { liked: bool, likes: n, comentarios: [] } }
+
+  function _estadoDe(id){
+    if (!estado[id]) estado[id] = { liked:false, likes:0, comentarios:[] };
+    return estado[id];
+  }
+
+  function toggleLike(id, elemento){
+    const e = _estadoDe(id);
+    e.liked = !e.liked;
+    e.likes += e.liked ? 1 : -1;
+    elemento.classList.toggle('activo', e.liked);
+    elemento.querySelector('.contador').textContent = e.likes;
+  }
+
+  function toggleComentarios(id){
+    const caja = document.getElementById('comentarios-' + id);
+    caja.classList.toggle('abierta');
+  }
+
+  function agregarComentario(id){
+    const input = document.getElementById('input-comentario-' + id);
+    const texto = input.value.trim();
+    if (!texto) return;
+
+    const e = _estadoDe(id);
+    e.comentarios.push(texto);
+    input.value = '';
+
+    const lista = document.getElementById('lista-comentarios-' + id);
+    lista.innerHTML = e.comentarios
+      .map(c => `<div class="comentario"><b>Tú:</b> ${c}</div>`)
+      .join('');
+  }
+
+  // ------------------------------------------------------------
+  // 2) PUBLICACIONES (imágenes traídas desde Google Sheets)
+  //    Se piden al servidor con google.script.run
+  // ------------------------------------------------------------
+  function pintarPublicaciones(publicaciones){
+    const cont = document.getElementById('lista-publicaciones');
+
+    if (!publicaciones || publicaciones.length === 0){
+      cont.innerHTML = '<div class="vacio">No se encontraron publicaciones en la hoja.</div>';
+      return;
+    }
+
+    cont.innerHTML = publicaciones.map(pub => `
+      <div class="publicacion">
+        <div class="cabecera-post">
+          <div class="avatar">P${pub.id}</div>
+          <div>
+            <div class="nombre">Publicación #${pub.id}</div>
+            <div class="fecha">Hoy</div>
+          </div>
+        </div>
+        ${pub.texto ? `<div class="texto-post">${pub.texto}</div>` : ''}
+        <img src="${pub.imagen}" alt="Publicación ${pub.id}">
+        <div class="acciones">
+          <span onclick="toggleLike('post-${pub.id}', this)">👍 <span class="contador">0</span> Me gusta</span>
+          <span onclick="toggleComentarios('post-${pub.id}')">💬 Comentar</span>
+          <span>↗️ Compartir</span>
+        </div>
+        <div class="caja-comentarios" id="comentarios-post-${pub.id}">
+          <div class="lista-comentarios" id="lista-comentarios-post-${pub.id}"></div>
+          <div class="form-comentario">
+            <input type="text" id="input-comentario-post-${pub.id}" placeholder="Escribe un comentario...">
+            <button onclick="agregarComentario('post-${pub.id}')">Enviar</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function errorPublicaciones(err){
+    document.getElementById('lista-publicaciones').innerHTML =
+      '<div class="vacio">Error al cargar: ' + err + '</div>';
+  }
+
+  // ---- URL de tu Apps Script publicado ----
+  const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzVB7wyB4iaYIPtf-2pPAHqRztlVgdTngZiDOVOZDOn-xuYcvsG4-LaO8tuz-bO_KsCxg/exec";
+
+  fetch(URL_APPS_SCRIPT + "?action=publicaciones")
+    .then(res => res.json())
+    .then(pintarPublicaciones)
+    .catch(errorPublicaciones);
+</script>
+
+</body>
+</html>
